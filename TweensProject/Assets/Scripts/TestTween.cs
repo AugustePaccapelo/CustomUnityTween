@@ -36,9 +36,9 @@ public class TestTween : MonoBehaviour
         _endPos = _endObj.transform.position;
 
         Tween tween = Tween.CreateTween();
-        tween.NewProperty(_target.transform, "position", _endPos, _time).From(_startPos)
-            .SetType(TweenType.Elastic)
-            .SetEase(TweenEase.Out);
+        tween.NewProperty(_target.transform, "postion", _endPos, _time).From(_startPos)
+            .SetType(TweenType.Bounce)
+            .SetEase(TweenEase.In);
         tween.Play();
     }
 

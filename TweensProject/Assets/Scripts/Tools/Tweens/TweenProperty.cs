@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Unity.VisualScripting;
 using UnityEngine;
 
 // Author : Auguste Paccapelo
@@ -41,6 +42,8 @@ public class TweenProperty<T> : ITweenProperty
 
     private Tween _myTween;
 
+    public event Action OnFinish;
+
     private static Dictionary<Type, Func<object, object, float, object>> _lerpsFunc = new Dictionary<Type, Func<object, object, float, object>>()
     {
         // C# types
@@ -61,6 +64,19 @@ public class TweenProperty<T> : ITweenProperty
     };
 
     // ---------- FUNCTIONS ---------- \\
+
+    /*void coucou()
+    {
+        SpriteRenderer sr;
+        Tween<Color>(f => sr.color = f);
+    }
+
+    void Tween<T>(Action<T> strat)
+    {
+
+        strat.Invoke(0f);
+
+    }*/
 
     public TweenProperty(UnityEngine.Object obj, string method, T value, float time, Tween tween)
     {
@@ -133,6 +149,7 @@ public class TweenProperty<T> : ITweenProperty
 
     private void DestroyProperty()
     {
+        OnFinish?.Invoke();
         _myTween.StopProperty(this);
     }
 

@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 // Author : Auguste Paccapelo
 
@@ -16,6 +16,9 @@ public class Tween
     private float _elapseTime = 0f;
 
     private bool _isPaused = true;
+
+    public event Action OnStart;
+    public event Action OnFinish;
 
     // ---------- FUNCTIONS ---------- \\
 
@@ -39,10 +42,12 @@ public class Tween
     public void Play()
     {
         _isPaused = false;
+        OnStart?.Invoke();
     }
 
     public void Stop()
     {
+        OnFinish?.Invoke();
         TweenManager.Instance.RemoveTween(this);
     }
 
@@ -53,7 +58,7 @@ public class Tween
         return tween;
     }
 
-    public TweenProperty<T> NewProperty<T>(Object obj, string method, T value, float time)
+    public TweenProperty<T> NewProperty<T>(UnityEngine.Object obj, string method, T value, float time)
     {
         TweenProperty<T> property = new TweenProperty<T>(obj, method, value, time, this);
         _tweenProperties.Add(property);
