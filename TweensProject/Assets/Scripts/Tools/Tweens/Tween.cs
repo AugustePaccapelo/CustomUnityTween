@@ -58,9 +58,23 @@ public class Tween
         return tween;
     }
 
-    public TweenProperty<T> NewProperty<T>(UnityEngine.Object obj, string method, T value, float time)
+    public TweenProperty<ValueType> NewProperty<ValueType>(Action<ValueType> function, ValueType startVal, ValueType finalVal, float time)
     {
-        TweenProperty<T> property = new TweenProperty<T>(obj, method, value, time, this);
+        TweenProperty<ValueType> property = new TweenProperty<ValueType>(function, startVal, finalVal, time, this);
+        _tweenProperties.Add(property);
+        return property;
+    }
+
+    public TweenProperty<ValueType> NewProperty<ValueType>(UnityEngine.Object obj, string method, ValueType finalVal, float time)
+    {
+        TweenProperty<ValueType> property = new TweenProperty<ValueType>(obj, method, finalVal, time, this);
+        _tweenProperties.Add(property);
+        return property;
+    }
+
+    public TweenProperty<ValueType> NewProperty<ValueType>(UnityEngine.Object obj, string method,ValueType startVal, ValueType finalVal, float time)
+    {
+        TweenProperty<ValueType> property = new TweenProperty<ValueType>(obj, method, finalVal, time, this);
         _tweenProperties.Add(property);
         return property;
     }

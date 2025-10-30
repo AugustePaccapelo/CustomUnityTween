@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using System.Reflection;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 // Author : Auguste Paccapelo
 
-public class TweenProperty<T> : ITweenProperty
+public class TweenProperty<ValueType> : ITweenProperty
 {
+    private enum MethodUse
+    {
+        Reflexion, Strategy
+    }
+
     // ---------- VARIABLES ---------- \\
     
     // ----- Prefabs & Assets ----- \\
@@ -20,8 +26,10 @@ public class TweenProperty<T> : ITweenProperty
     private TweenEase _ease = TweenEase.In;
 
     private float _time = 1f;
-    private T _finalValue;
-    private T _startValue;
+    private ValueType _finalValue;
+    private ValueType _startValue;
+    private ValueType _currentValue;
+    public ValueType CurrentValue => _currentValue;
     private Func<float, Func<float, float>, float> EaseFunc;
     private Func<float, float> TypeFunc;
 
@@ -35,8 +43,10 @@ public class TweenProperty<T> : ITweenProperty
 
     public bool isPlaying = true;
 
+    private MethodUse _currentMethod;
     private PropertyInfo _property;
     private FieldInfo _field;
+    private Action<ValueType> _function;
 
     private bool _fromCurrent = true;
 
@@ -65,38 +75,57 @@ public class TweenProperty<T> : ITweenProperty
 
     // ---------- FUNCTIONS ---------- \\
 
-    /*void coucou()
+    public TweenProperty(Action<ValueType> function, ValueType startVal, ValueType finalVal, float time, Tween tween)
     {
-        SpriteRenderer sr;
-        Tween<Color>(f => sr.color = f);
+        _currentMethod = MethodUse.Strategy;
+        _startValue = startVal;
+        _finalValue = finalVal;
+        _myTween = tween;
+        SetType(_type);
+        SetEase(_ease);
+        _function = function;
     }
 
-    void Tween<T>(Action<T> strat)
+    public TweenProperty(UnityEngine.Object obj, string method, ValueType finalVal, float time, Tween tween)
     {
-
-        strat.Invoke(0f);
-
-    }*/
-
-    public TweenProperty(UnityEngine.Object obj, string method, T value, float time, Tween tween)
-    {
-        _obj = obj;
-        _finalValue = value;
+        _currentMethod = MethodUse.Reflexion;
+        _finalValue = finalVal;
         _time = time;
         _myTween = tween;
         SetType(_type);
         SetEase(_ease);
 
-        _property = obj.GetType().GetProperty(method);
+        _obj = obj;
+        SetReflexionFiels(method);
+
+        if (_fromCurrent) _startValue = GetObjValue();
+    }
+
+    public TweenProperty(UnityEngine.Object obj, string method, ValueType startVal, ValueType finalVal, float time, Tween tween)
+    {
+        _currentMethod = MethodUse.Reflexion;
+        _finalValue = finalVal;
+        _time = time;
+        _myTween = tween;
+        SetType(_type);
+        SetEase(_ease);
+
+        _obj = obj;
+        SetReflexionFiels(method);
+
+        _startValue = startVal;
+    }
+
+    private void SetReflexionFiels(string method)
+    {
+        _property = _obj.GetType().GetProperty(method);
         if (_property == null)
-            _field = obj.GetType().GetField(method);
-        if (_property == null &&  _field == null)
+            _field = _obj.GetType().GetField(method);
+        if (_property == null && _field == null)
         {
             DestroyProperty();
             throw new Exception("No property or field found");
         }
-        
-        if (_fromCurrent) _startValue = GetObjValue();
     }
 
     public void Update(float elapseTime)
@@ -105,38 +134,55 @@ public class TweenProperty<T> : ITweenProperty
         elapseTime = Mathf.Clamp(elapseTime, 0, _time);
         float w = Mathf.Clamp01(elapseTime / _time);
         w = RealWeight(w);
-        T value = (T)_lerpsFunc[typeof(T)](_startValue, _finalValue, w);
-        SetValue(value);
+        _currentValue = (ValueType)_lerpsFunc[typeof(ValueType)](_startValue, _finalValue, w);
+
+        switch (_currentMethod)
+        {
+            case MethodUse.Reflexion:
+                ReflexionMethod();
+                break;
+            case MethodUse.Strategy:
+                StrategyMethod();
+                break;
+            default:
+                throw new NotImplementedException();
+        }
+
         if (elapseTime >= _time) DestroyProperty();
     }
 
-    private T GetObjValue()
+    private void StrategyMethod()
+    {
+        _function.Invoke(_currentValue);
+    }
+
+    private void ReflexionMethod()
+    {
+        if (_property != null) _property.SetValue(_obj, _currentValue);
+        else _field.SetValue(_obj, _currentValue);
+    }
+
+    private ValueType GetObjValue()
     {
         object value = _property != null ? _property.GetValue(_obj) : _field.GetValue(_obj);
-        return (T)value;
+        return (ValueType)value;
     }
 
-    private void SetValue(T value)
-    {
-        if (_property != null) _property.SetValue(_obj, value);
-        else _field.SetValue(_obj, value);
-    }
-
-    public TweenProperty<T> SetType(TweenType newType)
+    public TweenProperty<ValueType> SetType(TweenType newType)
     {
         _type = newType;
         SetTypeFunc(_type);
         return this;
     }
 
-    public TweenProperty<T> SetEase(TweenEase newEase)
+    public TweenProperty<ValueType> SetEase(TweenEase newEase)
     {
         _ease = newEase;
         SetEaseFunc(_ease);
         return this;
     }
 
-    public TweenProperty<T> From(T value)
+    public TweenProperty<ValueType> From(ValueType value)
     {
         _startValue = value;
         return this;
