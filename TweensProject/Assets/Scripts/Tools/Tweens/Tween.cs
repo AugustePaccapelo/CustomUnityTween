@@ -74,7 +74,7 @@ public class Tween
 
     public TweenProperty<ValueType> NewProperty<ValueType>(UnityEngine.Object obj, string method,ValueType startVal, ValueType finalVal, float time)
     {
-        TweenProperty<ValueType> property = new TweenProperty<ValueType>(obj, method, finalVal, time, this);
+        TweenProperty<ValueType> property = new TweenProperty<ValueType>(obj, method, startVal, finalVal, time, this);
         _tweenProperties.Add(property);
         return property;
     }

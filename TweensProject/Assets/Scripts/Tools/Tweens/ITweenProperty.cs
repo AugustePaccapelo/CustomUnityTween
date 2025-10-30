@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface ITweenProperty
 {
-    void Update(float deltaTime);
+    void Update(float elapseTime);
 }

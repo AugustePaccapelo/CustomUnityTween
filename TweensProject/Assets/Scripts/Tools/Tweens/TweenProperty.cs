@@ -48,13 +48,11 @@ public class TweenProperty<ValueType> : ITweenProperty
     private FieldInfo _field;
     private Action<ValueType> _function;
 
-    private bool _fromCurrent = true;
-
     private Tween _myTween;
 
     public event Action OnFinish;
 
-    private static Dictionary<Type, Func<object, object, float, object>> _lerpsFunc = new Dictionary<Type, Func<object, object, float, object>>()
+    private static readonly Dictionary<Type, Func<object, object, float, object>> _lerpsFunc = new Dictionary<Type, Func<object, object, float, object>>()
     {
         // C# types
         {typeof(float), (a, b, t) => (float)a + ((float)b - (float)a) * t},
@@ -98,7 +96,7 @@ public class TweenProperty<ValueType> : ITweenProperty
         _obj = obj;
         SetReflexionFiels(method);
 
-        if (_fromCurrent) _startValue = GetObjValue();
+        _startValue = GetObjValue();
     }
 
     public TweenProperty(UnityEngine.Object obj, string method, ValueType startVal, ValueType finalVal, float time, Tween tween)
@@ -134,7 +132,14 @@ public class TweenProperty<ValueType> : ITweenProperty
         elapseTime = Mathf.Clamp(elapseTime, 0, _time);
         float w = Mathf.Clamp01(elapseTime / _time);
         w = RealWeight(w);
-        _currentValue = (ValueType)_lerpsFunc[typeof(ValueType)](_startValue, _finalValue, w);
+        if (_lerpsFunc.ContainsKey(typeof(ValueType)))
+        {
+            _currentValue = (ValueType)_lerpsFunc[typeof(ValueType)](_startValue, _finalValue, w);
+        }
+        else
+        { 
+            throw new ArgumentException("The ValueType given is not supported (" + typeof(ValueType) + ").");
+        }
 
         switch (_currentMethod)
         {
@@ -175,10 +180,24 @@ public class TweenProperty<ValueType> : ITweenProperty
         return this;
     }
 
+    public TweenProperty<ValueType> SetType(Func<float, float> customType)
+    {
+        TypeFunc = customType;
+        _type = TweenType.Custom;
+        return this;
+    }
+
     public TweenProperty<ValueType> SetEase(TweenEase newEase)
     {
         _ease = newEase;
         SetEaseFunc(_ease);
+        return this;
+    }
+
+    public TweenProperty<ValueType> SetEase(Func<float, Func<float, float>, float> customEase)
+    {
+        _ease = TweenEase.Custom;
+        EaseFunc = customEase;
         return this;
     }
 

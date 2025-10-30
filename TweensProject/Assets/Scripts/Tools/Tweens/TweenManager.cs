@@ -37,6 +37,7 @@ public class TweenManager : MonoBehaviour
             return;
         }
         Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     void Start() { }
@@ -47,7 +48,7 @@ public class TweenManager : MonoBehaviour
     {
         for (int i = _tweens.Count - 1; i >= 0; i--)
         {
-            _tweens[i].Update(Time.deltaTime);
+            _tweens[i].Update(Time.fixedDeltaTime);
         }
     }
 
