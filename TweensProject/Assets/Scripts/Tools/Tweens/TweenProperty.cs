@@ -33,6 +33,8 @@ public class TweenProperty<TweenValueType> : TweenPropertyBase
 
     private List<TweenPropertyBase> _nextProperties = new List<TweenPropertyBase>();
 
+    public event Action<TweenValueType> OnUpdate;
+
     // ---------- FUNCTIONS ---------- \\
 
     public TweenProperty(TweenValueType startVal, TweenValueType finalVal, float time, Tween tween)
@@ -118,9 +120,8 @@ public class TweenProperty<TweenValueType> : TweenPropertyBase
         w = RealWeight(w);
         if (lerpsFunc.ContainsKey(typeof(TweenValueType)))
         {
-            Debug.Log(elapse);
             _currentValue = (TweenValueType)lerpsFunc[typeof(TweenValueType)](_startValue, _finalValue, w);
-            Debug.Log(_currentValue);
+            OnUpdate?.Invoke(_currentValue);
         }
         else
         { 
@@ -229,10 +230,8 @@ public class TweenProperty<TweenValueType> : TweenPropertyBase
         _isPlaying = false;
         TriggerOnFinish();
         int length = _nextProperties.Count - 1;
-        Debug.Log("finish property");
         for (int i = length; i >= 0; i--)
         {
-            Debug.Log("execuert nexts");
             _nextProperties[i].Start();
             _nextProperties.RemoveAt(i);
         }
