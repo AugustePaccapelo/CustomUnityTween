@@ -1,10 +1,11 @@
 using System;
 using System.Reflection;
+using System.Collections.Generic;
 using UnityEngine;
 
 // Author : Auguste Paccapelo
 
-public class TweenProperty<ValueType> : TweenPropertyBase
+public class TweenProperty<TweenValueType> : TweenPropertyBase
 {
     // ---------- VARIABLES ---------- \\
     
@@ -14,10 +15,10 @@ public class TweenProperty<ValueType> : TweenPropertyBase
 
     // ----- Others ----- \\
 
-    private ValueType _finalValue;
-    private ValueType _startValue;
-    private ValueType _currentValue;
-    public ValueType CurrentValue => _currentValue;    
+    private TweenValueType _finalValue;
+    private TweenValueType _startValue;
+    private TweenValueType _currentValue;
+    public TweenValueType CurrentValue => _currentValue;    
 
     private UnityEngine.Object _obj;
 
@@ -26,16 +27,18 @@ public class TweenProperty<ValueType> : TweenPropertyBase
     private MethodUse _currentMethod;
     private PropertyInfo _property;
     private FieldInfo _field;
-    private Action<ValueType> _function;
+    private Action<TweenValueType> _function;
 
     private Tween _myTween;
 
     public event Action OnFinish;
     public event Action OnStart;
 
+    private List<TweenPropertyBase> _nextProperties = new List<TweenPropertyBase>();
+
     // ---------- FUNCTIONS ---------- \\
 
-    public TweenProperty(Action<ValueType> function, ValueType startVal, ValueType finalVal, float time, Tween tween)
+    public TweenProperty(Action<TweenValueType> function, TweenValueType startVal, TweenValueType finalVal, float time, Tween tween)
     {
         _currentMethod = MethodUse.Strategy;
         _startValue = startVal;
@@ -46,7 +49,7 @@ public class TweenProperty<ValueType> : TweenPropertyBase
         _function = function;
     }
 
-    public TweenProperty(UnityEngine.Object obj, string method, ValueType finalVal, float duration, Tween tween)
+    public TweenProperty(UnityEngine.Object obj, string method, TweenValueType finalVal, float duration, Tween tween)
     {
         _currentMethod = MethodUse.Reflexion;
         _finalValue = finalVal;
@@ -61,7 +64,7 @@ public class TweenProperty<ValueType> : TweenPropertyBase
         _startValue = GetObjValue();
     }
 
-    public TweenProperty(UnityEngine.Object obj, string method, ValueType startVal, ValueType finalVal, float duration, Tween tween)
+    public TweenProperty(UnityEngine.Object obj, string method, TweenValueType startVal, TweenValueType finalVal, float duration, Tween tween)
     {
         _currentMethod = MethodUse.Reflexion;
         _finalValue = finalVal;
@@ -96,20 +99,25 @@ public class TweenProperty<ValueType> : TweenPropertyBase
         OnStart?.Invoke();
     }
 
-    public override void Update(float elapseTime)
+    public override void Update(float deltaTime)
     {
         if (!_isPlaying) return;
 
-        elapseTime = Mathf.Clamp(elapseTime - delay, 0, time);
-        float w = Mathf.Clamp01(elapseTime / time);
+        _elapseTime += deltaTime;
+        if (_elapseTime <= delay) return;
+
+        float elapse = Mathf.Clamp(_elapseTime - delay, 0, time);
+        float w = Mathf.Clamp01(elapse / time);
         w = RealWeight(w);
-        if (lerpsFunc.ContainsKey(typeof(ValueType)))
+        if (lerpsFunc.ContainsKey(typeof(TweenValueType)))
         {
-            _currentValue = (ValueType)lerpsFunc[typeof(ValueType)](_startValue, _finalValue, w);
+            Debug.Log(elapse);
+            _currentValue = (TweenValueType)lerpsFunc[typeof(TweenValueType)](_startValue, _finalValue, w);
+            Debug.Log(_currentValue);
         }
         else
         { 
-            throw new ArgumentException("The ValueType given is not supported (" + typeof(ValueType) + ").");
+            throw new ArgumentException("The ValueType given is not supported (" + typeof(TweenValueType) + ").");
         }
 
         switch (_currentMethod)
@@ -124,7 +132,7 @@ public class TweenProperty<ValueType> : TweenPropertyBase
                 throw new NotImplementedException();
         }
 
-        if (elapseTime >= time + delay) Stop();
+        if (elapse >= time) Stop();
     }
 
     private void StrategyMethod()
@@ -138,49 +146,55 @@ public class TweenProperty<ValueType> : TweenPropertyBase
         else _field.SetValue(_obj, _currentValue);
     }
 
-    private ValueType GetObjValue()
+    private TweenValueType GetObjValue()
     {
         object value = _property != null ? _property.GetValue(_obj) : _field.GetValue(_obj);
-        return (ValueType)value;
+        return (TweenValueType)value;
     }
 
-    public TweenProperty<ValueType> SetDelay(float tweenDelay)
+    public TweenProperty<TweenValueType> SetDelay(float tweenDelay)
     {
         delay = tweenDelay;
         return this;
     }
 
-    public TweenProperty<ValueType> SetType(TweenType newType)
+    public TweenProperty<TweenValueType> SetType(TweenType newType)
     {
         type = newType;
         SetTypeFunc(type);
         return this;
     }
 
-    public TweenProperty<ValueType> SetType(Func<float, float> customType)
+    public TweenProperty<TweenValueType> SetType(Func<float, float> customType)
     {
         TypeFunc = customType;
         type = TweenType.Custom;
         return this;
     }
 
-    public TweenProperty<ValueType> SetEase(TweenEase newEase)
+    public TweenProperty<TweenValueType> SetEase(TweenEase newEase)
     {
         ease = newEase;
         SetEaseFunc(ease);
         return this;
     }
 
-    public TweenProperty<ValueType> SetEase(Func<float, Func<float, float>, float> customEase)
+    public TweenProperty<TweenValueType> SetEase(Func<float, Func<float, float>, float> customEase)
     {
         ease = TweenEase.Custom;
         EaseFunc = customEase;
         return this;
     }
 
-    public TweenProperty<ValueType> From(ValueType value)
+    public TweenProperty<TweenValueType> From(TweenValueType value)
     {
         _startValue = value;
+        return this;
+    }
+
+    public override TweenPropertyBase AddNextProperty(TweenPropertyBase property)
+    {
+        _nextProperties.Add(property);
         return this;
     }
 
@@ -203,6 +217,15 @@ public class TweenProperty<ValueType> : TweenPropertyBase
     {
         _isPlaying = false;
         OnFinish?.Invoke();
+        int length = _nextProperties.Count - 1;
+        Debug.Log("finish property");
+        for (int i = length; i >= 0; i--)
+        {
+            Debug.Log("execuert nexts");
+            _nextProperties[i].Start();
+            _nextProperties.RemoveAt(i);
+        }
+        
         DestroyProperty();
     }
 

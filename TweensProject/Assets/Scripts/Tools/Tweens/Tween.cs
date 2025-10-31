@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 
 // Author : Auguste Paccapelo
 
@@ -13,52 +14,70 @@ public class Tween
 
     // ----- Others ----- \\
 
-    private float _elapseTime = 0f;
-
     private bool _isPaused = true;
     private bool _hasStarted = false;
+
+    private bool _isParallel = true;
 
     public event Action OnStart;
     public event Action OnFinish;
 
     // ---------- FUNCTIONS ---------- \\
 
-    public void Update(float deltaTime)
+    public Tween Update(float deltaTime)
     {
-        if (_isPaused) return;
+        if (_isPaused) return this;
         
-        _elapseTime += deltaTime;
         for (int i = _tweenProperties.Count - 1; i >= 0; i--)
         {
-            _tweenProperties[i].Update(_elapseTime);
+            _tweenProperties[i].Update(deltaTime);
         }
         if (_tweenProperties.Count == 0) Stop();
+
+        return this;
     }
 
-    public void Pause()
+    public Tween Pause()
     {
         _isPaused = true;
+
+        return this;
     }
 
-    public void Resume()
+    public Tween Resume()
     {
         _isPaused = false;
+
+        return this;
     }
 
-    public void Play()
+    public Tween Play()
     {
-        if (_hasStarted) return;
+        if (_hasStarted) return this;
 
         _hasStarted = true;
         _isPaused = false;
-        foreach (TweenPropertyBase property in _tweenProperties)
+
+        TweenPropertyBase property;
+        int length = _tweenProperties.Count-1;
+
+        for (int i = length; i >= 1; i--)
         {
-            property.Start();
+            property = _tweenProperties[i];
+            if (_isParallel) property.Start();
+            else
+            {
+                _tweenProperties[i-1].AddNextProperty(property);
+            }
         }
+        if (!_isParallel) _tweenProperties[0].Start();
+
         OnStart?.Invoke();
+
+        return this;
     }
 
-    public void Stop()
+    public Tween Stop()
     {
         OnFinish?.Invoke();
         foreach (TweenPropertyBase property in _tweenProperties)
@@ -66,6 +85,8 @@ public class Tween
             property.Stop();
         }
         TweenManager.Instance.RemoveTween(this);
+
+        return this;
     }
 
     public static Tween CreateTween()
@@ -99,5 +120,29 @@ public class Tween
     public void StopProperty(TweenPropertyBase property)
     {
         _tweenProperties.Remove(property);
+    }
+
+    public Tween SetParallel(bool isParallel)
+    {
+        _isParallel = isParallel;
+        return this;
+    }
+
+    public Tween SetChain(bool isChain)
+    {
+        _isParallel = !isChain;
+        return this;
+    }
+
+    public Tween Parallel()
+    {
+        _isParallel = true;
+        return this;
+    }
+
+    public Tween Chain()
+    {
+        _isParallel = false;
+        return this;
     }
 }

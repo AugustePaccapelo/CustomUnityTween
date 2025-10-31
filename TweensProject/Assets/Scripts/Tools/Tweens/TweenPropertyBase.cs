@@ -34,6 +34,8 @@ public abstract class TweenPropertyBase
     protected Func<float, Func<float, float>, float> EaseFunc;
     protected Func<float, float> TypeFunc;
 
+    protected float _elapseTime = 0f;
+
     protected static readonly Dictionary<Type, Func<object, object, float, object>> lerpsFunc = new Dictionary<Type, Func<object, object, float, object>>()
     {
         // C# types
@@ -55,10 +57,11 @@ public abstract class TweenPropertyBase
 
     // ---------- FUNCTIONS ---------- \\
 
-    public abstract void Update(float elapseTime);
+    public abstract void Update(float deltaTime);
     public abstract void Start();
     public abstract void Stop();
-    
+    public abstract TweenPropertyBase AddNextProperty(TweenPropertyBase property);
+
     protected void SetTypeFunc(TweenType newType)
     {
         switch (newType)
