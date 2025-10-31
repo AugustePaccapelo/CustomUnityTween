@@ -15,6 +15,10 @@ public class TweenManager : MonoBehaviour
 
     private List<Tween> _tweens = new List<Tween>();
 
+    // ----- Others ----- \\
+
+    private bool _isPlaying = true;
+
     // ---------- FUNCTIONS ---------- \\
 
     // ----- Buil-in ----- \\
@@ -34,6 +38,8 @@ public class TweenManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!_isPlaying) return;
+
         for (int i = _tweens.Count - 1; i >= 0; i--)
         {
             _tweens[i].Update(Time.fixedDeltaTime);
@@ -42,14 +48,33 @@ public class TweenManager : MonoBehaviour
 
     // ----- My Functions ----- \\
 
+    public void PauseAll()
+    {
+        _isPlaying = false;
+    }
+
+    public void ResumeAll()
+    {
+        _isPlaying = true;
+    }
+
+    public void StopAll()
+    {
+        int length = _tweens.Count - 1;
+        for (int i = length;  i >= 0; i--)
+        {
+            _tweens[i].Stop();
+        }
+    }
+
     public void AddTween(Tween tween)
     {
-        _tweens.Add(tween);
+        if (!_tweens.Contains(tween)) _tweens.Add(tween);
     }
 
     public void RemoveTween(Tween tween)
     {
-        _tweens.Remove(tween);
+        if (_tweens.Contains(tween)) _tweens.Remove(tween);
     }
 
     // ----- Destructor ----- \\
