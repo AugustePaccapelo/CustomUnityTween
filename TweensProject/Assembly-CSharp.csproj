@@ -62,7 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Tools\ScriptTemplatesLoaderTool.cs" />
-    <Compile Include="Assets\Scripts\Tools\Tweens\ITweenProperty.cs" />
+    <Compile Include="Assets\Scripts\Tools\Tweens\TweenPropertyBase.cs" />
     <Compile Include="Assets\Scripts\Tools\Tweens\TweenEnums.cs" />
     <Compile Include="Assets\Scripts\Tools\Tweens\TweenManager.cs" />
     <Compile Include="Assets\Scripts\TestTween.cs" />

@@ -9,13 +9,14 @@ public class Tween
 
     // ----- Objects ----- \\
 
-    private List<ITweenProperty> _tweenProperties = new List<ITweenProperty>();
+    private List<TweenPropertyBase> _tweenProperties = new List<TweenPropertyBase>();
 
     // ----- Others ----- \\
 
     private float _elapseTime = 0f;
 
     private bool _isPaused = true;
+    private bool _hasStarted = false;
 
     public event Action OnStart;
     public event Action OnFinish;
@@ -39,15 +40,31 @@ public class Tween
         _isPaused = true;
     }
 
-    public void Play()
+    public void Resume()
     {
         _isPaused = false;
+    }
+
+    public void Play()
+    {
+        if (_hasStarted) return;
+
+        _hasStarted = true;
+        _isPaused = false;
+        foreach (TweenPropertyBase property in _tweenProperties)
+        {
+            property.Start();
+        }
         OnStart?.Invoke();
     }
 
     public void Stop()
     {
         OnFinish?.Invoke();
+        foreach (TweenPropertyBase property in _tweenProperties)
+        {
+            property.Stop();
+        }
         TweenManager.Instance.RemoveTween(this);
     }
 
@@ -79,7 +96,7 @@ public class Tween
         return property;
     }
 
-    public void StopProperty(ITweenProperty property)
+    public void StopProperty(TweenPropertyBase property)
     {
         _tweenProperties.Remove(property);
     }

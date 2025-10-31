@@ -1,5 +1,5 @@
 // Author : Auguste Paccapelo
-using UnityEngine;
+
 public enum TweenEase
 {
     In, Out, InOut, OutIn, Custom
@@ -14,10 +14,13 @@ public static class TweenTarget
 {
     public static class Transform
     {
-        public const string POSITION = "position";
+        public const string GLOBAL_POSITION = "position";
+        public const string LOCAL_POSITION = "localPosition";
         public const string LOCAL_SCALE = "localScale";
-        public const string ROTATION_QUATERNION = "rotation";
-        public const string ROTATION_EULER_ANGLE = "eulerAngles";
+        public const string GLOBAL_ROTATION_QUATERNION = "rotation";
+        public const string GLOBAL_ROTATION_EULER_ANGLE = "eulerAngles";
+        public const string LOCAL_ROTATION_QUATERNION = "localRotation";
+        public const string LOCAL_ROTATION_EULER_ANGLE = "localEulerAngles";
     }
 
     public static class Renderer
