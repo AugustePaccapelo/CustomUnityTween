@@ -43,8 +43,9 @@ public class TestTween : MonoBehaviour
         tween.NewProperty(f => _target.transform.localScale = f, Vector2.zero, Vector2.one, _time * 2)
             .SetType(TweenType.Elastic).SetEase(TweenEase.Out)
             .SetDelay(1f);
-        tween.Chain();
-        tween.Play();
+
+        tween.Chain()
+            .Play();
     }
 
     private void Update() { }

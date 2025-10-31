@@ -23,6 +23,8 @@ public class TweenProperty<TweenValueType> : TweenPropertyBase
     private UnityEngine.Object _obj;
 
     private bool _isPlaying = false;
+    private bool _hasStarted = false;
+    private bool _hasStartValue = false;
 
     private MethodUse _currentMethod;
     private PropertyInfo _property;
@@ -44,6 +46,8 @@ public class TweenProperty<TweenValueType> : TweenPropertyBase
         SetBaseVal(finalVal, time, tween);
 
         _startValue = startVal;
+
+        _hasStartValue = true;
     }
 
     public TweenProperty(Action<TweenValueType> function, TweenValueType startVal, TweenValueType finalVal, float duration, Tween tween)
@@ -54,6 +58,8 @@ public class TweenProperty<TweenValueType> : TweenPropertyBase
 
         _startValue = startVal;
         _function = function;
+
+        _hasStartValue = true;
     }
 
     public TweenProperty(UnityEngine.Object obj, string method, TweenValueType finalVal, float duration, Tween tween)
@@ -65,7 +71,7 @@ public class TweenProperty<TweenValueType> : TweenPropertyBase
         _obj = obj;
         SetReflexionFiels(method);
 
-        _startValue = GetObjValue();
+        _hasStartValue = false;
     }
 
     public TweenProperty(UnityEngine.Object obj, string method, TweenValueType startVal, TweenValueType finalVal, float duration, Tween tween)
@@ -77,6 +83,8 @@ public class TweenProperty<TweenValueType> : TweenPropertyBase
         _obj = obj;
         SetReflexionFiels(method);
         _startValue = startVal;
+
+        _hasStartValue = true;
     }
 
     private void SetBaseVal(TweenValueType finalVal, float duration, Tween tween)
@@ -102,9 +110,11 @@ public class TweenProperty<TweenValueType> : TweenPropertyBase
 
     public override void Start()
     {
-        if (_isPlaying) return;
+        if (_hasStarted) return;
 
+        _hasStarted = true;
         _isPlaying = true;
+        if (_currentMethod == MethodUse.Reflexion && !_hasStartValue) _startValue = GetObjValue();
         TriggerOnStart();
     }
 
@@ -241,6 +251,6 @@ public class TweenProperty<TweenValueType> : TweenPropertyBase
 
     private void DestroyProperty()
     {
-        _myTween.StopProperty(this);
+        _myTween.DestroyTweenProperty(this);
     }
 }
