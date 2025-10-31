@@ -175,7 +175,7 @@ public class TweenProperty<TweenValueType> : TweenPropertyBase
         return this;
     }
 
-    public TweenProperty<TweenValueType> SetType(Func<float, float> customType)
+    public TweenProperty<TweenValueType> SetCustomType(Func<float, float> customType)
     {
         TypeFunc = customType;
         type = TweenType.Custom;
@@ -189,7 +189,7 @@ public class TweenProperty<TweenValueType> : TweenPropertyBase
         return this;
     }
 
-    public TweenProperty<TweenValueType> SetEase(Func<float, Func<float, float>, float> customEase)
+    public TweenProperty<TweenValueType> SetCustomEase(Func<float, Func<float, float>, float> customEase)
     {
         ease = TweenEase.Custom;
         EaseFunc = customEase;
