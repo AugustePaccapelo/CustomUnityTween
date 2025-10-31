@@ -9,10 +9,6 @@ public class TweenProperty<TweenValueType> : TweenPropertyBase
 {
     // ---------- VARIABLES ---------- \\
     
-    // ----- Prefabs & Assets ----- \\
-
-    // ----- Objects ----- \\
-
     // ----- Others ----- \\
 
     private TweenValueType _finalValue;

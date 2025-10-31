@@ -8,10 +8,6 @@ public abstract class TweenPropertyBase
 {
     // ---------- VARIABLES ---------- \\
 
-    // ----- Prefabs & Assets ----- \\
-
-    // ----- Objects ----- \\
-
     // ----- Others ----- \\
 
     private const float BACK_C1 = 1.70158f;
