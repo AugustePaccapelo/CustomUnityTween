@@ -22,7 +22,7 @@ public abstract class TweenPropertyBase
 
     protected enum MethodUse
     {
-        Reflexion, Strategy
+        Reflexion, Strategy, ReturnValue
     }
 
     protected TweenType type = TweenType.Linear;
@@ -35,6 +35,10 @@ public abstract class TweenPropertyBase
     protected Func<float, float> TypeFunc;
 
     protected float _elapseTime = 0f;
+    public float ElapseTime => _elapseTime;
+
+    public event Action OnFinish;
+    public event Action OnStart;
 
     protected static readonly Dictionary<Type, Func<object, object, float, object>> lerpsFunc = new Dictionary<Type, Func<object, object, float, object>>()
     {
@@ -61,6 +65,9 @@ public abstract class TweenPropertyBase
     public abstract void Start();
     public abstract void Stop();
     public abstract TweenPropertyBase AddNextProperty(TweenPropertyBase property);
+
+    protected void TriggerOnFinish() => OnFinish?.Invoke();
+    protected void TriggerOnStart() => OnStart?.Invoke();
 
     protected void SetTypeFunc(TweenType newType)
     {
