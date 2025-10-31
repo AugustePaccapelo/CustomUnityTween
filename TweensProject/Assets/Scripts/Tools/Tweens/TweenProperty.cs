@@ -39,6 +39,13 @@ public class TweenProperty<TweenValueType> : TweenPropertyBase
 
     // ---------- FUNCTIONS ---------- \\
 
+    /// <summary>
+    /// Constructor of TweenProperty for when not modifying a property or field.
+    /// </summary>
+    /// <param name="startVal">The start value.</param>
+    /// <param name="finalVal">The end value.</param>
+    /// <param name="time">The duration.</param>
+    /// <param name="tween">The attached tween.</param>
     public TweenProperty(TweenValueType startVal, TweenValueType finalVal, float time, Tween tween)
     {
         _currentMethod = MethodUse.ReturnValue;
@@ -50,6 +57,14 @@ public class TweenProperty<TweenValueType> : TweenPropertyBase
         _hasStartValue = true;
     }
 
+    /// <summary>
+    /// Constructor of TweenProperty when using a function to update a property or field.
+    /// </summary>
+    /// <param name="function">The function to call each Updates.</param>
+    /// <param name="startVal">The start value.</param>
+    /// <param name="finalVal">The end value.</param>
+    /// <param name="duration">The duration.</param>
+    /// <param name="tween">The attached tween.</param>
     public TweenProperty(Action<TweenValueType> function, TweenValueType startVal, TweenValueType finalVal, float duration, Tween tween)
     {
         _currentMethod = MethodUse.Strategy;
@@ -62,6 +77,14 @@ public class TweenProperty<TweenValueType> : TweenPropertyBase
         _hasStartValue = true;
     }
 
+    /// <summary>
+    /// Constructor of TweenProperty using reflexion, with the current value as startValue.
+    /// </summary>
+    /// <param name="obj">The targeted object.</param>
+    /// <param name="method">The targeted property or field.</param>
+    /// <param name="finalVal">The end value.</param>
+    /// <param name="duration">The duration.</param>
+    /// <param name="tween">The attached tween.</param>
     public TweenProperty(UnityEngine.Object obj, string method, TweenValueType finalVal, float duration, Tween tween)
     {
         _currentMethod = MethodUse.Reflexion;
@@ -74,6 +97,15 @@ public class TweenProperty<TweenValueType> : TweenPropertyBase
         _hasStartValue = false;
     }
 
+    /// <summary>
+    /// Constructor of TweenProperty using reflexion.
+    /// </summary>
+    /// <param name="obj">The targeted object.</param>
+    /// <param name="method">The targeted property or field.</param>
+    /// <param name="startVal">The start value.</param>
+    /// <param name="finalVal">The end value.</param>
+    /// <param name="duration">The duration.</param>
+    /// <param name="tween">The attached tween.</param>
     public TweenProperty(UnityEngine.Object obj, string method, TweenValueType startVal, TweenValueType finalVal, float duration, Tween tween)
     {
         _currentMethod = MethodUse.Reflexion;
@@ -172,12 +204,22 @@ public class TweenProperty<TweenValueType> : TweenPropertyBase
         return (TweenValueType)value;
     }
 
+    /// <summary>
+    /// Add a delay before the animation start.
+    /// </summary>
+    /// <param name="tweenDelay">Time to wait in seconds.</param>
+    /// <returns>This TweenProperty to chain the methods calls (e.g. property.SetDelay(...).SetEase(...);).</returns>
     public TweenProperty<TweenValueType> SetDelay(float tweenDelay)
     {
         delay = tweenDelay;
         return this;
     }
 
+    /// <summary>
+    /// Set the tween type.
+    /// </summary>
+    /// <param name="newType">The wanted tween type.</param>
+    /// <returns>This TweenProperty to chain the methods calls (e.g. property.SetType(...).SetEase(...);).</returns>
     public TweenProperty<TweenValueType> SetType(TweenType newType)
     {
         type = newType;
@@ -185,6 +227,11 @@ public class TweenProperty<TweenValueType> : TweenPropertyBase
         return this;
     }
 
+    /// <summary>
+    /// Set a custom tween Type, must be a function that return a float and have et float in parameters.
+    /// </summary>
+    /// <param name="customType">The function of the custome type, must return a float and take a float in parameters.</param>
+    /// <returns>This TweenProperty to chain the methods calls (e.g. property.SetCustomType(...).SetEase(...);).</returns>
     public TweenProperty<TweenValueType> SetCustomType(Func<float, float> customType)
     {
         TypeFunc = customType;
@@ -192,6 +239,11 @@ public class TweenProperty<TweenValueType> : TweenPropertyBase
         return this;
     }
 
+    /// <summary>
+    /// Set the tween Ease.
+    /// </summary>
+    /// <param name="newEase">The wanted Tween Ease.</param>
+    /// <returns>This TweenProperty to chain the methods calls (e.g. property.SetEase(...).SetType(...);).</returns>
     public TweenProperty<TweenValueType> SetEase(TweenEase newEase)
     {
         ease = newEase;
@@ -199,6 +251,12 @@ public class TweenProperty<TweenValueType> : TweenPropertyBase
         return this;
     }
 
+    /// <summary>
+    /// Set a custom ease, must be a function that return a float and have a type function and a float in parameters.
+    /// </summary>
+    /// <param name="customEase">The function of the custom ease, 
+    /// must return a float and take a Type function and a float in parameters.</param>
+    /// <returns>This TweenProperty to chain the methods calls (e.g. property.SetCustomEase(...).SetType(...);).</returns>
     public TweenProperty<TweenValueType> SetCustomEase(Func<float, Func<float, float>, float> customEase)
     {
         ease = TweenEase.Custom;
@@ -208,6 +266,11 @@ public class TweenProperty<TweenValueType> : TweenPropertyBase
 
     public TweenValueType GetCurrentValue() => CurrentValue;
 
+    /// <summary>
+    /// Set the start value of the property.
+    /// </summary>
+    /// <param name="value">The start value.</param>
+    /// <returns>This TweenProperty to chain the methods calls (e.g. property.From(...).SetEase(...);).</returns>
     public TweenProperty<TweenValueType> From(TweenValueType value)
     {
         _startValue = value;
@@ -224,17 +287,26 @@ public class TweenProperty<TweenValueType> : TweenPropertyBase
     {
         return EaseFunc(w, TypeFunc);
     }
-
+    
+    /// <summary>
+    /// Pause the TweenProperty.
+    /// </summary>
     public void Pause()
     {
         _isPlaying = false;
     }
 
+    /// <summary>
+    /// Resume the TweenProperty at the last state.
+    /// </summary>
     public void Resume()
     {
         _isPlaying = true;
     }
 
+    /// <summary>
+    /// Stop and Destroy the TweenProperty.
+    /// </summary>
     public override void Stop()
     {
         _isPlaying = false;

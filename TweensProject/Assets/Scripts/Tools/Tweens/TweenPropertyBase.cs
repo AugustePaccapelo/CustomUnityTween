@@ -64,6 +64,7 @@ public abstract class TweenPropertyBase
 
     /// <summary>
     /// Update the TweenProperty, you don't need to call this function, the Tween attched si handling it.
+    /// OnUpdate is called here.
     /// </summary>
     /// <param name="deltaTime">Time since last call.</param>
     public abstract void Update(float deltaTime);
