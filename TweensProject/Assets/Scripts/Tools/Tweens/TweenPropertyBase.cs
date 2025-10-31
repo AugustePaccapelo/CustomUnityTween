@@ -35,6 +35,7 @@ public abstract class TweenPropertyBase
     protected Func<float, float> TypeFunc;
 
     protected float _elapseTime = 0f;
+
     public float ElapseTime => _elapseTime;
 
     public event Action OnFinish;
@@ -61,9 +62,27 @@ public abstract class TweenPropertyBase
 
     // ---------- FUNCTIONS ---------- \\
 
+    /// <summary>
+    /// Update the TweenProperty, you don't need to call this function, the Tween attched si handling it.
+    /// </summary>
+    /// <param name="deltaTime">Time since last call.</param>
     public abstract void Update(float deltaTime);
+
+    /// <summary>
+    /// Start the TweenProperty, OnStart is called here.
+    /// </summary>
     public abstract void Start();
+
+    /// <summary>
+    /// Stop and destroy the TweenProperty, OnFinish is called here.
+    /// </summary>
     public abstract void Stop();
+
+    /// <summary>
+    /// Add a TweenProperty to start when this TweenProperty is finished.
+    /// </summary>
+    /// <param name="property">The TweenProperty to start.</param>
+    /// <returns>This TweenPropertyBase.</returns>
     public abstract TweenPropertyBase AddNextProperty(TweenPropertyBase property);
 
     protected void TriggerOnFinish() => OnFinish?.Invoke();

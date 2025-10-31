@@ -11,21 +11,13 @@ public class TweenManager : MonoBehaviour
 
     public static TweenManager Instance {get; private set;}
 
-    // ----- Prefabs & Assets ----- \\
-
     // ----- Objects ----- \\
 
     private List<Tween> _tweens = new List<Tween>();
 
-    // ----- Others ----- \\
-
     // ---------- FUNCTIONS ---------- \\
 
     // ----- Buil-in ----- \\
-
-    private void OnEnable() { }
-
-    private void OnDisable() { }
 
     private void Awake()
     {
@@ -39,10 +31,6 @@ public class TweenManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
-
-    void Start() { }
-
-    void Update() { }
 
     private void FixedUpdate()
     {
