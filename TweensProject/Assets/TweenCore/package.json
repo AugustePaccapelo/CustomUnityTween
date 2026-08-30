@@ -1,0 +1,17 @@
+{
+  "name": "com.augustepaccapelo.tweencore",
+  "version": "1.1.0",
+  "displayName": "TweenCore",
+  "description": "Tweening system for Unity. Animate any property or field by reflection, by function, or by reading the value yourself, with orthogonal type and ease curves. Includes TweenCoreComponent to build tweens from the inspector without code.",
+  "unity": "6000.0",
+  "author": {
+    "name": "Auguste Paccapelo"
+  },
+  "keywords": [
+    "tween",
+    "tweening",
+    "animation",
+    "easing"
+  ],
+  "samples": []
+}

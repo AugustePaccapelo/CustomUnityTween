@@ -4,3 +4,10 @@ TweensProject/Logs
 TweensProject/Temp
 TweensProject/UserSettings
 TweensProject/obj
+
+TestResults
+TweenCore-Audit.pdf
+TweensProject/TweenCore.csproj
+TweensProject/TweenCore.Editor.csproj
+TweensProject/TweenCore.Tests.Editor.csproj
+TweensProject/TweenCore.Tests.Runtime.csproj

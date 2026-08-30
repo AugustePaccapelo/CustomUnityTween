@@ -245,7 +245,7 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 2870472334799273984
-      type: {class: 'TweenCoreProperty`1[[UnityEngine.Vector3, UnityEngine.CoreModule]]', ns: , asm: Assembly-CSharp}
+      type: {class: 'TweenCoreProperty`1[[UnityEngine.Vector3, UnityEngine.CoreModule]]', ns: Tweening, asm: TweenCore}
       data:
         _tweenTargetObj: {fileID: 20216354}
         obj: {fileID: 20216356}
@@ -1210,7 +1210,7 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 7641270970823999560
-      type: {class: 'TweenCoreProperty`1[[UnityEngine.Vector3, UnityEngine.CoreModule]]', ns: , asm: Assembly-CSharp}
+      type: {class: 'TweenCoreProperty`1[[UnityEngine.Vector3, UnityEngine.CoreModule]]', ns: Tweening, asm: TweenCore}
       data:
         _tweenTargetObj: {fileID: 0}
         obj: {fileID: 747174022}
@@ -1290,7 +1290,7 @@ MonoBehaviour:
             m_PersistentCalls:
               m_Calls: []
     - rid: 7641270970823999561
-      type: {class: 'TweenCoreProperty`1[[UnityEngine.Vector3, UnityEngine.CoreModule]]', ns: , asm: Assembly-CSharp}
+      type: {class: 'TweenCoreProperty`1[[UnityEngine.Vector3, UnityEngine.CoreModule]]', ns: Tweening, asm: TweenCore}
       data:
         _tweenTargetObj: {fileID: 0}
         obj: {fileID: 747174022}
@@ -1370,7 +1370,7 @@ MonoBehaviour:
             m_PersistentCalls:
               m_Calls: []
     - rid: 7641270970823999562
-      type: {class: 'TweenCoreProperty`1[[UnityEngine.Vector3, UnityEngine.CoreModule]]', ns: , asm: Assembly-CSharp}
+      type: {class: 'TweenCoreProperty`1[[UnityEngine.Vector3, UnityEngine.CoreModule]]', ns: Tweening, asm: TweenCore}
       data:
         _tweenTargetObj: {fileID: 0}
         obj: {fileID: 747174022}
@@ -1450,7 +1450,7 @@ MonoBehaviour:
             m_PersistentCalls:
               m_Calls: []
     - rid: 7641270970823999563
-      type: {class: 'TweenCoreProperty`1[[UnityEngine.Vector3, UnityEngine.CoreModule]]', ns: , asm: Assembly-CSharp}
+      type: {class: 'TweenCoreProperty`1[[UnityEngine.Vector3, UnityEngine.CoreModule]]', ns: Tweening, asm: TweenCore}
       data:
         _tweenTargetObj: {fileID: 0}
         obj: {fileID: 747174022}
@@ -1544,7 +1544,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &807011427
 Transform:
   m_ObjectHideFlags: 0
@@ -1575,7 +1575,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &818862180
 Transform:
   m_ObjectHideFlags: 0
@@ -1648,7 +1648,7 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 2870472130020245575
-      type: {class: 'TweenCoreProperty`1[[UnityEngine.Vector3, UnityEngine.CoreModule]]', ns: , asm: Assembly-CSharp}
+      type: {class: 'TweenCoreProperty`1[[UnityEngine.Vector3, UnityEngine.CoreModule]]', ns: Tweening, asm: TweenCore}
       data:
         _tweenTargetObj: {fileID: 0}
         obj: {fileID: 0}
@@ -1826,7 +1826,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1431108652
 Transform:
   m_ObjectHideFlags: 0
@@ -1915,7 +1915,7 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 2870472248389533696
-      type: {class: 'TweenCoreProperty`1[[UnityEngine.Vector3, UnityEngine.CoreModule]]', ns: , asm: Assembly-CSharp}
+      type: {class: 'TweenCoreProperty`1[[UnityEngine.Vector3, UnityEngine.CoreModule]]', ns: Tweening, asm: TweenCore}
       data:
         _tweenTargetObj: {fileID: 1442918755}
         obj: {fileID: 1442918758}
@@ -1995,7 +1995,7 @@ MonoBehaviour:
             m_PersistentCalls:
               m_Calls: []
     - rid: 2870472294634094659
-      type: {class: 'TweenCoreProperty`1[[UnityEngine.Vector3, UnityEngine.CoreModule]]', ns: , asm: Assembly-CSharp}
+      type: {class: 'TweenCoreProperty`1[[UnityEngine.Vector3, UnityEngine.CoreModule]]', ns: Tweening, asm: TweenCore}
       data:
         _tweenTargetObj: {fileID: 1442918755}
         obj: {fileID: 1442918758}
@@ -2160,7 +2160,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &1444927385
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2722,7 +2722,7 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 2870472041420554309
-      type: {class: 'TweenCoreProperty`1[[UnityEngine.Vector3, UnityEngine.CoreModule]]', ns: , asm: Assembly-CSharp}
+      type: {class: 'TweenCoreProperty`1[[UnityEngine.Vector3, UnityEngine.CoreModule]]', ns: Tweening, asm: TweenCore}
       data:
         _tweenTargetObj: {fileID: 2053049821}
         obj: {fileID: 2053049825}
@@ -2847,7 +2847,7 @@ MonoBehaviour:
             m_PersistentCalls:
               m_Calls: []
     - rid: 2870472130020245574
-      type: {class: 'TweenCoreProperty`1[[UnityEngine.Vector3, UnityEngine.CoreModule]]', ns: , asm: Assembly-CSharp}
+      type: {class: 'TweenCoreProperty`1[[UnityEngine.Vector3, UnityEngine.CoreModule]]', ns: Tweening, asm: TweenCore}
       data:
         _tweenTargetObj: {fileID: 20216354}
         obj: {fileID: 20216356}

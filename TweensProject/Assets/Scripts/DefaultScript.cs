@@ -1,3 +1,4 @@
+using Tweening;
 using System.Collections;
 using UnityEngine;
 
@@ -32,7 +33,7 @@ public class DefaultScript : MonoBehaviour
 
     private void Start()
     {
-        _myTween = TweenCore.CreateTween().SurviveOnSceneLoad();
+        _myTween = TweenCore.CreateTween().SurviveOnUnload();
         _myTween.NewProperty(TweenFunc, Vector3.zero, new Vector3(5, 5, 0), 2f)
             .SetEase(TweenCoreEase.Out).SetType(TweenCoreType.Elastic);
         //StartCoroutine(TweenCoroutine());

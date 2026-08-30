@@ -257,7 +257,7 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 2870472268785385540
-      type: {class: 'TweenCoreProperty`1[[UnityEngine.Vector3, UnityEngine.CoreModule]]', ns: , asm: Assembly-CSharp}
+      type: {class: 'TweenCoreProperty`1[[UnityEngine.Vector3, UnityEngine.CoreModule]]', ns: Tweening, asm: TweenCore}
       data:
         _tweenTargetObj: {fileID: 300152801}
         obj: {fileID: 300152803}
@@ -554,7 +554,7 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 2870472268785385541
-      type: {class: 'TweenCoreProperty`1[[UnityEngine.Vector3, UnityEngine.CoreModule]]', ns: , asm: Assembly-CSharp}
+      type: {class: 'TweenCoreProperty`1[[UnityEngine.Vector3, UnityEngine.CoreModule]]', ns: Tweening, asm: TweenCore}
       data:
         _tweenTargetObj: {fileID: 1818908552}
         obj: {fileID: 1818908554}
